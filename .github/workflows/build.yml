@@ -1,0 +1,29 @@
+name: Build EXE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Hent kode
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer PyInstaller
+        run: python -m pip install pyinstaller
+
+      - name: Byg EXE
+        run: pyinstaller --onefile --name LavExcelCSV konverter_csv_til_semikolon.py
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: exe-fil
+          path: dist/LavExcelCSV.exe
